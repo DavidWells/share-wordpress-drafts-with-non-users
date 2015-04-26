@@ -1,0 +1,16 @@
+{
+  "name": "drafts-for-friends",
+  "main": "",
+  "dependencies": {
+    "griddle-react": "^0.1.20",
+    "react": "~0.12.0"
+  },
+  "devDependencies": {
+    "browserify": "~3.20.0",
+    "gulp": "~3.8.9",
+    "gulp-browserify": "~0.5.0",
+    "gulp-concat": "~2.4.1",
+    "react-tools": "^0.12.0",
+    "reactify": "0.15.2"
+  }
+}
