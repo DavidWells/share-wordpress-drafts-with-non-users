@@ -7,7 +7,7 @@ var mountNode = document.getElementById("react_mount");
 
 /* bootstrap data here */
 
-React.render(new ReactApp({}), mountNode);
+React.render(new ReactApp({drafts: WP_API_Settings.drafts }), mountNode);
 
 
 jQuery(document).ready(function($) {
@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 			},
 			success: function(data){
 				var self = this;
-				alert(data);
+				console.log(data);
 
 			},
 

@@ -10,10 +10,10 @@ class Drafts_For_Friends_Admin {
 	*/
 	public function __construct() {
 
-		self::load_hooks();
 		add_action('admin_menu', array(__CLASS__, 'add_admin_pages'));
-		add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'drafts_for_friends_ajax' ));
-		add_action( 'wp_ajax_drafts_for_friends_ajax', array(__CLASS__, 'drafts_for_friends_ajax' ));
+		add_action('admin_enqueue_scripts', array( __CLASS__ , 'enqueue_files' ) );
+		add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
+		add_action( 'wp_ajax_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
 		//add_action('admin_menu', array( __CLASS__ , 'add_sub_menus' ) );
 	}
 
@@ -21,7 +21,6 @@ class Drafts_For_Friends_Admin {
 		*  Adds sub-menus to 'Calls to Action'
 		*/
 	public static function add_admin_pages() {
-
 
 		//add_submenu_page('edit.php', __( 'Drafts for Friends' , 'draftsforfriends' ), __( 'Drafts for Friends' , 'draftsforfriends' ) , 'manage_options', 'mountPoint', 100);
 
@@ -35,16 +34,9 @@ class Drafts_For_Friends_Admin {
 	}
 
 	/**
-	*  Loads hooks and filters
-	*/
-	public static function load_hooks() {
-		add_action('admin_enqueue_scripts', array( __CLASS__ , 'enqueue_files' ) );
-	}
-
-	/**
-	 *  Enqueues scripts and styles related to wp-call-to-action post type and cta settings pages
+	 *  Enqueues scripts and styles
 	 */
-	public static function enqueue_files( $hook ) {
+	public static function enqueue_files($hook) {
 		global $post;
 
 		$screen = get_current_screen();
@@ -61,7 +53,7 @@ class Drafts_For_Friends_Admin {
 							array(	'root' => esc_url_raw( get_json_url() ),
 									'nonce' => wp_create_nonce( 'wp_json' ),
 									'ajax_url' => admin_url( 'admin-ajax.php' ),
-									'drafts' => self::drafts_for_friends_ajax() ) );
+									'drafts' => self::get_drafts() ) );
 		/* load styles */
 		wp_enqueue_style('wp-cta-css-post-new', DRAFTS_FOR_FRIENDS_URLPATH . 'css/daf.css');
 
@@ -80,21 +72,26 @@ class Drafts_For_Friends_Admin {
 	 * Generic function to return draft posts
 	 * @return array of drafts
 	 */
-	public static function drafts_for_friends_ajax() {
-	$posts = get_posts( array(
-	       'posts_per_page'   => -1,
-	       'orderby'          => 'title',
-	       'order'            => 'ASC',
-	       'post_type'        => 'post',
-	       'post_status'      => array( 'draft' )
-	   ) );
+	public static function get_drafts() {
+
+		$post_types = get_post_types( '', 'names' );
+
+		$posts = get_posts( array(
+		       'posts_per_page'   => -1,
+		       'orderby'          => 'title',
+		       'order'            => 'ASC',
+		       'post_type'        => $post_types,
+		       'post_status'      => array( 'draft' )
+		) );
 
 	   $list = array();
 	   foreach ( $posts as $post ) {
 	       $list[] = array(
 	           'id'   => $post->ID,
-	           'name' => $post->post_title,
-	           'link' => get_permalink( $post->ID ),
+	           'title' => $post->post_title,
+	           'status' => "Not Shared",
+	           'actions' => "", // stub for action column
+	           'type of post' => $post->post_type // stub for action column
 	       );
 	   }
 	   /* Thanks dWalsh! http://davidwalsh.name/detect-ajax */

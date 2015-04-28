@@ -1,0 +1,24 @@
+.checkbox-column {
+	width: 47px;
+	text-align: center;
+}
+.checkbox-column span:first-child {
+	display: inline-block;
+	text-align: center;
+	margin-left: 15px;
+}
+.griddle-settings h6 {
+	display: block;
+	font-weight: 600;
+	line-height: 1.4em;
+	margin: 0px;
+	margin-bottom: 15px;
+	font-size: 1.1em;
+}
+.griddle-container {
+	margin-top: 10px;
+}
+.griddle-settings .griddle-columns {
+	border-bottom: none !important;
+	margin-bottom: 15px;
+}

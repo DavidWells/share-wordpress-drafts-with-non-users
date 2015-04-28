@@ -2,7 +2,7 @@
   "name": "drafts-for-friends",
   "main": "",
   "dependencies": {
-    "griddle-react": "^0.1.20",
+    "griddle-react": "^0.2.12",
     "react": "~0.12.0"
   },
   "devDependencies": {
