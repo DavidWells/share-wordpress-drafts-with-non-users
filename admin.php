@@ -3,6 +3,10 @@
 /**
  * Admin Class
  */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class Drafts_For_Friends_Admin {
 
 	/**
@@ -33,6 +37,18 @@ class Drafts_For_Friends_Admin {
 
 	}
 
+	public static function localize_javascript_text(){
+
+		$words = array(
+			'settings' => __('Settings', 'draftsforfriends'),
+			'filter' => __('Filter Results', 'draftsforfriends'),
+			'stop_sharing' => __('Stop Sharing', 'draftsforfriends'),
+			'type_of_post' => __('Type of Post', 'draftsforfriends')
+		);
+
+		return $words;
+	}
+
 	/**
 	 *  Enqueues scripts and styles
 	 */
@@ -51,8 +67,9 @@ class Drafts_For_Friends_Admin {
 		wp_localize_script( 'drafts-for-friends',
 							'WP_API_Settings',
 							array(	'root' => esc_url_raw( get_json_url() ),
-									'nonce' => wp_create_nonce( 'wp_json' ),
+									'nonce' => wp_create_nonce( 'daf_nonce' ),
 									'ajax_url' => admin_url( 'admin-ajax.php' ),
+									'localization' => self::localize_javascript_text(),
 									'drafts' => self::get_drafts() ) );
 		/* load styles */
 		wp_enqueue_style('wp-cta-css-post-new', DRAFTS_FOR_FRIENDS_URLPATH . 'css/daf.css');
@@ -85,11 +102,16 @@ class Drafts_For_Friends_Admin {
 		) );
 
 	   $list = array();
+
 	   foreach ( $posts as $post ) {
+	   		//print_r($post);
+	   	   $transient = get_transient( 'daf_' . $post->ID);
+	   	   /* _no_transient flag for initial table sort and state */
+	   	   $status = ($transient) ? $transient : $post->post_date . " no_transient";
 	       $list[] = array(
 	           'id'   => $post->ID,
 	           'title' => $post->post_title,
-	           'status' => "Not Shared",
+	           'status' => $status,
 	           'actions' => "", // stub for action column
 	           'type of post' => $post->post_type // stub for action column
 	       );
