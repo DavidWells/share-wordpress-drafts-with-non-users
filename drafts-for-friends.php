@@ -10,6 +10,9 @@ Text Domain: draftsforfriends
 Domain Path: /lang/
 */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 
 	final class Drafts_For_Friends_Plugin {
@@ -109,9 +112,11 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 			/* Admin Only */
 			if (is_admin()) {
 				include_once( DRAFTS_FOR_FRIENDS_PATH . 'admin.php');
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'admin-ajax.php');
+
 			} else {
 			/* Frontend Only */
-
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'limit-access.php');
 			}
 
 
@@ -132,10 +137,8 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 
 	/* Initiate Plugin */
 	if ( Drafts_For_Friends_Plugin::is_valid_php_version() ) {
-		// Get Plugin Running
 		$Drafts_For_Friends_Plugin = new Drafts_For_Friends_Plugin;
 	} else {
-		// Show Fail
 		Drafts_For_Friends_Plugin::fail_php_version();
 	}
 
