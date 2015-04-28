@@ -25,6 +25,7 @@ class Drafts_For_Friends_Ajax {
 
 		$post_id = intval( $_POST['post_id'] );
 		$date = sanitize_text_field( $_POST['date'] ); //'2015-04-30 23:56:27'
+		//set_transient( 'daf_258', '2015-04-30 23:56:27', 1 * HOUR_IN_SECONDS );
 		/*
 			define( 'MINUTE_IN_SECONDS', 60 );
 			define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
@@ -35,9 +36,9 @@ class Drafts_For_Friends_Ajax {
 		//$time_in_seconds = abs(strtotime($date2) - strtotime($date1));
 		set_transient( 'daf_' . $post_id, $date, 1 * HOUR_IN_SECONDS );
 
-		$message = array('msg' => __('Time extended', 'draftsforfriends'));
+		$set_state = array('status' => $date );
 
-		echo json_encode( $message );
+		echo json_encode( $set_state );
 		die();
 	}
 
@@ -45,8 +46,9 @@ class Drafts_For_Friends_Ajax {
 		check_ajax_referer( 'daf_nonce', 'nonce' );
 		$post_id = intval( $_POST['post_id'] );
 		delete_transient( 'daf_' . $post_id);
-		$message = array('msg' => __('Draft disbaled', 'draftsforfriends'));
-		echo json_encode( $message );
+		//$set_state = array('msg' => __('Draft disbaled', 'draftsforfriends'));
+		$set_state = array('status' => false );
+		echo json_encode( $set_state );
 		die();
 	}
 
