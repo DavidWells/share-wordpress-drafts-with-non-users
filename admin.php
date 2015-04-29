@@ -85,6 +85,29 @@ class Drafts_For_Friends_Admin {
 		</div>
 
 	<?php }
+
+	/**
+	 * Retrieve the human-friendly expiration time
+	 *
+	 * @access  public
+	 * @return  string
+	 * @since   1.0
+	*/
+	public static function get_transient_expiration( $name ) {
+
+		$time_now   = time();
+		$expiration = get_option( '_transient_timeout_' . $name );
+
+		if( empty( $expiration ) ) {
+			return __( 'Does not expire', 'pw-transients-manager' );
+		}
+
+		if( $time_now > $expiration ) {
+			return __( 'Expired', 'pw-transients-manager' );
+		}
+		return human_time_diff( $time_now, $expiration );
+
+	}
 	/**
 	 * Generic function to return draft posts
 	 * @return array of drafts
@@ -106,8 +129,10 @@ class Drafts_For_Friends_Admin {
 	   foreach ( $posts as $post ) {
 	   		//print_r($post);
 	   	   $transient = get_transient( 'daf_' . $post->ID);
+	   	   $test = self::get_transient_expiration('daf_' . $post->ID);
+
 	   	   /* _no_transient flag for initial table sort and state */
-	   	   $status = ($transient) ? $transient : $post->post_date . " no_transient";
+	   	   $status = ($transient) ? $test : "no_transient";
 	       $list[] = array(
 	           'id'   => $post->ID,
 	           'title' => $post->post_title,
