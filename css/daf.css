@@ -1,11 +1,71 @@
+.griddle-filter {
+	float: left;
+}
+.griddle-settings-toggle {
+	float: right;
+	margin-bottom:10px;
+}
+.griddle-settings {
+	clear: both;
+	display: block;
+	line-height: 19px;
+	padding: 11px 15px;
+	font-size: 14px;
+	text-align: left;
+	margin: 25px 1px 0 2px;
+	background-color: #fff;
+	border-left: 4px solid #ffba00;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+}
+.griddle-settings h6 {
+	margin-bottom: 5px;
+}
+.griddle-column-selection.checkbox {
+	display: inline-block;
+	width: 15%;
+}
 .checkbox-column {
 	width: 47px;
 	text-align: center;
+}
+.sort-descending span:last-child, .sort-ascending  span:last-child {
+	font-size: 10px;
+	vertical-align: top;
 }
 .checkbox-column span:first-child {
 	display: inline-block;
 	text-align: center;
 	margin-left: 15px;
+}
+.actions-column {
+	position: relative;
+	width: 320px;
+}
+.action-holder {
+	min-height: 31px;
+}
+.draftsforfriends-extend {
+
+}
+.draftsforfriends-extend select {
+	vertical-align: top;
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-right: 5px;
+}
+.stop.button{
+	margin-left: 10px;
+}
+.Share.button.button-primary {
+	margin-right: 5px;
+}
+span.Share {
+	margin-right: 5px;
+}
+input.expire-value {
+	width: 37px;
+	margin-right: 5px;
 }
 .griddle-settings h6 {
 	display: block;
@@ -17,6 +77,9 @@
 }
 .griddle-container {
 	margin-top: 10px;
+}
+.griddle-body .widefat td, .griddle-body .widefat th {
+	vertical-align: middle;
 }
 .griddle-settings .griddle-columns {
 	border-bottom: none !important;
