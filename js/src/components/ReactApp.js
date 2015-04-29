@@ -1,7 +1,7 @@
 var React = require('react');
 
 //var Griddle = React.createFactory(require('griddle-react'));
-var Griddle = require('griddle-react');
+var Grid = require('griddle-react');
 var fakeData = require('../data/fakeData.js').fakeData;
 //var columnMeta = require('../data/columnMeta.js');
 var columnMeta = require('./Columns.js');
@@ -14,34 +14,46 @@ var eventEmitter = new events.EventEmitter();
 var ReactApp = React.createClass({
       getInitialState: function() {
         return {
-          selected: []
+          data: this.props.gridData
         };
       },
-      componentWillMount: function () {
+      componentDidMount: function() {
+        var that = this;
+        /* Pseudo Flux implementation */
+        jQuery(document).on( 'updateData', function( event, row ) {
+            /* var filterTest = that.state.data.filter(function(user) {
+                return user.id === 300;
+            }); console.log(filterTest);*/
 
-      },
-      componentDidMount: function () {
+            var newData = that.state.data;
+            for (var i = newData.length - 1; i >= 0; i--) {
+               if(newData[i].id === row.id) {
+                    newData[i].status = "no_transient";
+               }
+            }
 
+            console.log('new data', newData);
+            that.setState({ data: newData });
 
+          });
       },
       render: function () {
         return (
           <div>
           <h2>Drafts for Friends</h2>
             <div id="table-area">
-               <Griddle
-                        initialSort="status"
-                        initialSortAscending={false}
-                        useGriddleStyles={false}
-                        settingsText={WP_API_Settings.localization.settings}
-                        filterPlaceholderText={WP_API_Settings.localization.filter}
-                        showSettings={true}
-                        showFilter={true}
-                        results={this.props.drafts}
-                        columnMetadata={columnMeta}
-                        resultsPerPage={resultsPerPage}
-                        tableClassName="wp-list-table widefat fixed striped posts"/>
-
+              {/* Grid renders components from Columns.js */}
+               <Grid
+                      initialSort="id"
+                      useGriddleStyles={false}
+                      settingsText={WP_API_Settings.localization.settings}
+                      filterPlaceholderText={WP_API_Settings.localization.filter}
+                      showSettings={true}
+                      showFilter={true}
+                      results={this.state.data}
+                      columnMetadata={columnMeta}
+                      resultsPerPage={resultsPerPage}
+                      tableClassName="wp-list-table widefat fixed striped posts"/>
             </div>
           </div>
         )
