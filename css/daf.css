@@ -18,7 +18,7 @@
 }
 .title-column {
 	position: relative;
-
+	overflow: visible;
 }
 .title-column span.dashicons,
 .title-column .dashicons:before {
