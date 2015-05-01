@@ -52,7 +52,7 @@ var Button = React.createClass({
         );
     } else {
       return (
-          <button className={classes} disabled={this.props.disabled} onClick={this.props.onClick} >
+          <button className={classes} id={this.props.id} disabled={this.props.disabled} onClick={this.props.onClick} >
                 {children}
           </button>
       );
