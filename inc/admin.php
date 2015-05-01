@@ -39,7 +39,8 @@ class Drafts_For_Friends_Admin {
 			'settings' => __('Settings', 'draftsforfriends'),
 			'filter' => __('Filter Results', 'draftsforfriends'),
 			'stop_sharing' => __('Stop Sharing', 'draftsforfriends'),
-			'type_of_post' => __('Type of Post', 'draftsforfriends')
+			'no_data'=> __('There are currently no drafts to share. Save a post as a draft in order to share it', 'draftsforfriends')
+			/* etc */
 		);
 
 		return $words;
