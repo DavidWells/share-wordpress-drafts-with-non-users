@@ -26,7 +26,10 @@ class Drafts_For_Friends_Ajax {
 		$post_id = intval( $_POST['post_id'] );
 		$time_value = intval( $_POST['time_value'] );
 		$time_unit = sanitize_text_field( $_POST['time_unit'] );
-		$date = sanitize_text_field( $_POST['date'] ); //'2015-04-30 23:56:27'
+		$transient_name = 'daf_' . $post_id;
+		$time = current_time( 'timestamp', 0 );
+		$now = date("Y-m-d G:i:s", $time);
+
 		//set_transient( 'daf_258', '2015-04-30 23:56:27', 1 * HOUR_IN_SECONDS );
 
 		switch ($time_unit) {
@@ -40,19 +43,39 @@ class Drafts_For_Friends_Ajax {
 		        $time_const = DAY_IN_SECONDS;
 		        break;
 		}
-		/*
-			define( 'MINUTE_IN_SECONDS', 60 );
-			define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
-			define( 'DAY_IN_SECONDS',    24 * HOUR_IN_SECONDS   );
-			define( 'WEEK_IN_SECONDS',    7 * DAY_IN_SECONDS    );
-			define( 'YEAR_IN_SECONDS',  365 * DAY_IN_SECONDS    );
-		*/
 
-		//$time_in_seconds = abs(strtotime($date2) - strtotime($date1));
+		$time_modifier = $time_value * $time_const;
 
-		set_transient( 'daf_' . $post_id, $date, $time_value * $time_const );
+		$transient = get_transient( $transient_name );
 
-		$set_state = array('status' => $date );
+		if($transient) {
+
+			$trans_expiration = get_option( '_transient_timeout_' . $transient_name );
+			$trans_expiration_date = date('Y-m-d G:i:s',  $trans_expiration);
+			$trans_expire_gmt = get_date_from_gmt( $trans_expiration_date, 'Y-m-d G:i:s' );
+
+			$new_date = date('Y-m-d G:i:s', strtotime($trans_expire_gmt) + $time_modifier);
+
+			$timePast  = strtotime($now);
+			$timeFuture = strtotime($new_date);
+			$new_expiration = ($timeFuture - $timePast);
+
+			$expiration = $new_expiration;
+
+
+		} else {
+
+			$new_date = date('Y-m-d G:i:s',  strtotime($now) + $time_modifier);
+			$expiration = $time_modifier;
+
+		}
+
+		set_transient( $transient_name, $new_date, $expiration );
+
+		$set_state = array( 'status' => $new_date,
+							'date' => $new_date,
+							'expiration_saved'=> $expiration
+						   );
 
 		echo json_encode( $set_state );
 		die();
