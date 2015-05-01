@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Admin Class
+ * Limit access based on WordPress transients
  */
 
 // Exit if accessed directly
@@ -10,9 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Drafts_For_Friends_Limit_Access {
 
 	public static $shared_post = null;
-	/**
-	*  Initializes class
-	*/
+
 	public function __construct() {
 
 		add_filter('posts_results', array(__CLASS__, 'posts_results_intercept'));
@@ -61,16 +59,12 @@ class Drafts_For_Friends_Limit_Access {
 	public static function check_expiration($id){
 		global $post;
 
-
-		//delete_transient('daf_258');
 		$nonce_transient = get_transient( 'daf_' . $id);
-		//$nonce_transient = '2015-04-27 11:56:27';
 
 		// Get time from WordPress timezone
 		$time = current_time( 'timestamp', 0 );
 		$now = date("Y-m-d G:i:s", $time);
 
-		//echo 'current time: '. $now . ' <br>Transient time:' . $nonce_transient; exit;
 		if($nonce_transient && (new DateTime($nonce_transient) > new DateTime($now))) {
 			// transient exists and is still valid
 			return true;
@@ -84,7 +78,4 @@ class Drafts_For_Friends_Limit_Access {
 
 }
 
-/**
-*  Loads Class Pre-Init
-*/
 $Drafts_For_Friends_Limit_Access = new Drafts_For_Friends_Limit_Access();
