@@ -5,6 +5,34 @@
 	float: right;
 	margin-bottom:10px;
 }
+.inactive {
+	color: #A3A3A3;
+  	font-style: italic;
+}
+.title-column {
+	position: relative;
+
+}
+.title-column span.dashicons,
+.title-column .dashicons:before {
+	font-size: 13px;
+	position: absolute;
+	left: -4px;
+	margin-bottom: 2px;
+}
+.title-column .dashicons:before  {
+	margin-top: 4px;
+}
+.title-column .dashicons.dashicons-no-alt:before {
+	font-size: 15px;
+	  margin-top: 7px;
+	  color: rgb(177, 6, 6);
+}
+
+.title-column input {
+	font-size: 10px;
+	width: 100%;
+}
 .griddle-settings {
 	clear: both;
 	display: block;
@@ -45,6 +73,13 @@
 .action-holder {
 	min-height: 31px;
 }
+.status-row {
+	font-style: italic;
+}
+.shared-text {
+	color:green;
+	font-style: normal;
+}
 .draftsforfriends-extend {
 
 }
@@ -57,10 +92,10 @@
 .stop.button{
 	margin-left: 10px;
 }
-.Share.button.button-primary {
+.action-button.button.button-primary {
 	margin-right: 5px;
 }
-span.Share {
+span.action-button {
 	margin-right: 5px;
 }
 input.expire-value {
