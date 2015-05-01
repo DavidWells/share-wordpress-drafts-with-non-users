@@ -16,7 +16,7 @@
 	color: #A3A3A3;
   	font-style: italic;
 }
-.title-column {
+.widefat td.title-column {
 	position: relative;
 	overflow: visible;
 }
