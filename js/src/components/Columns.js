@@ -37,5 +37,4 @@ var columnMeta = [
     "cssClassName": "actions-column"
   }
 ];
-
 module.exports = columnMeta;

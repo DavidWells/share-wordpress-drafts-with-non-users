@@ -49,6 +49,7 @@ var ReactApp = React.createClass({
                         useGriddleStyles={false}
                         settingsText={DAF_Settings.localization.settings}
                         filterPlaceholderText={DAF_Settings.localization.filter}
+                        noDataMessage={DAF_Settings.localization.no_data}
                         showSettings={true}
                         showFilter={true}
                         results={this.state.data}
