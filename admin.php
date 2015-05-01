@@ -124,11 +124,10 @@ class Drafts_For_Friends_Admin {
 	   $list = array();
 
 		foreach ( $posts as $post ) {
-			//print_r($post);
+
 			$transient_name = 'daf_' . $post->ID;
 			$transient = get_transient( $transient_name );
 
-			/* _no_transient flag for initial table sort and state */
 			$is_shared = ($transient) ? true : false;
 			$value = ($transient) ? self::get_transient_expiration($transient_name) : "Not Shared";
 
@@ -143,7 +142,7 @@ class Drafts_For_Friends_Admin {
 			   'title' => $post->post_title,
 			   'status' => $status,
 			   'actions' => "", // stub for action column
-			   'type of post' => $post->post_type // stub for action column
+			   'type of post' => $post->post_type
 			);
 	   }
 	   /* Thanks dWalsh! http://davidwalsh.name/detect-ajax */
