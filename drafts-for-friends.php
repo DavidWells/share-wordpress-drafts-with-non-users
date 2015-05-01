@@ -17,7 +17,56 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 
 	final class Drafts_For_Friends_Plugin {
 
-		/* START PHP VERSION CHECKS */
+		/**
+		* Main Drafts_For_Friends_Plugin Instance
+		*/
+		public function __construct() {
+			self::define_constants();
+			self::load_classes();
+			self::load_text_domain_init();
+		}
+
+		/*
+		* Setup plugin constants
+		*/
+		private static function define_constants() {
+
+			define('DRAFTS_FOR_FRIENDS_CURRENT_VERSION', '1.0.0' );
+			define('DRAFTS_FOR_FRIENDS_PATH', WP_PLUGIN_DIR.'/'.plugin_basename( dirname(__FILE__) ).'/' );
+			define('DRAFTS_FOR_FRIENDS_URLPATH',  plugins_url( '/', __FILE__ ) );
+			define('DRAFTS_FOR_FRIENDS_SLUG', plugin_basename( dirname(__FILE__) ) );
+			define('DRAFTS_FOR_FRIENDS_FILE', __FILE__ );
+		}
+
+		/**
+		*  Load php classes
+		*/
+		private static function load_classes() {
+
+			if (is_admin()) {
+				/* Admin Only */
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin.php');
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin-ajax.php');
+
+			} else {
+				/* Frontend Only */
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/limit-access.php');
+			}
+
+		}
+
+		/**
+		*	Loads the correct .mo file for this plugin
+		*/
+		private static function load_text_domain_init() {
+			add_action( 'init' , array( __CLASS__ , 'load_text_domain' ) );
+		}
+
+		public static function load_text_domain() {
+			load_plugin_textdomain( 'draftsforfriends' , false , DRAFTS_FOR_FRIENDS_SLUG . '/languages/' );
+		}
+
+		/*** START PHP VERSION CHECKS ***/
 		/**
 		 * Admin notices, collected and displayed on proper action
 		 *
@@ -78,60 +127,7 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 				echo wp_kses_post( $html_message );
 			}
 		}
-
-		/**
-		* Main Drafts_For_Friends_Plugin Instance
-		*/
-		public function __construct() {
-			self::define_constants();
-			self::load_classes();
-			self::load_text_domain_init();
-		}
-
-		/*
-		* Setup plugin constants
-		*
-		*/
-		private static function define_constants() {
-
-			define('DRAFTS_FOR_FRIENDS_CURRENT_VERSION', '1.0.0' );
-			define('DRAFTS_FOR_FRIENDS_PATH', WP_PLUGIN_DIR.'/'.plugin_basename( dirname(__FILE__) ).'/' );
-			define('DRAFTS_FOR_FRIENDS_URLPATH',  plugins_url( '/', __FILE__ ) );
-			define('DRAFTS_FOR_FRIENDS_SLUG', plugin_basename( dirname(__FILE__) ) );
-			define('DRAFTS_FOR_FRIENDS_FILE', __FILE__ );
-		}
-
-		/**
-		*  Load inbound pro classes
-		*/
-		private static function load_classes() {
-
-			/* Frontend & Admin */
-			//include_once( DRAFTS_FOR_FRIENDS_PATH . 'classes/class.options-api.php');
-
-			/* Admin Only */
-			if (is_admin()) {
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin.php');
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin-ajax.php');
-
-			} else {
-			/* Frontend Only */
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/limit-access.php');
-			}
-
-
-		}
-
-		/**
-		*	Loads the correct .mo file for this plugin
-		*/
-		private static function load_text_domain_init() {
-			add_action( 'init' , array( __CLASS__ , 'load_text_domain' ) );
-		}
-
-		public static function load_text_domain() {
-			load_plugin_textdomain( 'draftsforfriends' , false , DRAFTS_FOR_FRIENDS_SLUG . '/languages/' );
-		}
+		/*** END PHP VERSION CHECKS ***/
 
 	}
 
@@ -141,6 +137,5 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 	} else {
 		Drafts_For_Friends_Plugin::fail_php_version();
 	}
-
 
 }
