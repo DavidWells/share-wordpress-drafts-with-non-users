@@ -1,3 +1,6 @@
+/**
+ * Form Component to select Extend/Share times
+ */
 var React = require('react'),
 Button = require('./Button.js'),
 utils = require('./utils/utils.js');
@@ -48,23 +51,22 @@ var Extend = React.createClass({
 		};
   		this._doAjax(data);
   },
-  _extendShare: function(){
-
-  },
   _handleFormSubmit: function(e){
-  	   e.preventDefault();
+      /* prevent default form action */
+      e.preventDefault();
 
-  	   var data = {
-			action: 'enable_sharable_draft',
-			nonce: DAF_Settings.nonce,
-			post_id: this.props.rowData.id,
-			time_unit: this.refs.time_unit.getDOMNode().value,
-			time_value: this.state.expireValue
-  	   };
+      var data = {
+        action: 'enable_sharable_draft',
+        nonce: DAF_Settings.nonce,
+        post_id: this.props.rowData.id,
+        time_unit: this.refs.time_unit.getDOMNode().value,
+        time_value: this.state.expireValue
+      };
   	   // Do Ajax call with values here
-  	   this._doAjax(data);
+      this._doAjax(data);
   },
   componentDidMount: function() {
+    /* Add event listeners for better usability */
     document.addEventListener('click', this._checkClickAway);
     document.addEventListener('keyup', this._keyBinding);
     /* Grab input and focus cursor */
@@ -87,7 +89,6 @@ var Extend = React.createClass({
   },
   _checkClickAway: function(e) {
     var el = this.getDOMNode();
-
     // Check if the target is inside the current component
     if (this.isMounted() &&
       e.target != el &&
@@ -99,16 +100,16 @@ var Extend = React.createClass({
   	var modifierText = (this.props.action === "Share") ? "for" : "by";
     return (
           <div>
-           <form className="draftsforfriends-extend" onSubmit={this._handleFormSubmit} action="" method="post">
-					<input type="hidden" name="action" value="extend" />
-					<input type="hidden" name="nonce" value={DAF_Settings.nonce} />
-					<Button type="submit" name="draftsforfriends_submit"
-							value={this.props.action}
-							className={"action-button " + this.props.action}
-							primary={true}>
-						{this.props.action}
-					</Button>
-					<span className={"action-button " + this.props.action} >{modifierText}</span>
+          <form className="draftsforfriends-extend" onSubmit={this._handleFormSubmit} action="" method="post">
+    					<input type="hidden" name="action" value="extend" />
+    					<input type="hidden" name="nonce" value={DAF_Settings.nonce} />
+    					<Button type="submit" name="draftsforfriends_submit"
+    							value={this.props.action}
+    							className={"action-button " + this.props.action}
+    							primary={true}>
+    						{this.props.action}
+    					</Button>
+					   <span className={"action-button " + this.props.action} >{modifierText}</span>
            			<input name="expires" type="text"
            				   className="expire-value"
            				   ref="expireVal"

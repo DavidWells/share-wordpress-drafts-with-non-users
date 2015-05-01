@@ -7,12 +7,12 @@ columnMeta = require('./Columns.js'),
 resultsPerPage = 200;
 
 var ReactApp = React.createClass({
-      getInitialState: function() {
+    getInitialState: function() {
         return {
-          data: this.props.gridData
+            data: this.props.gridData
         };
-      },
-      componentDidMount: function() {
+    },
+    componentDidMount: function() {
         var that = this;
         /* Pseudo Flux implementation */
         jQuery(document).on( 'updateData', function( event, data ) {
@@ -36,31 +36,31 @@ var ReactApp = React.createClass({
 
             that.setState({ data: newData });
 
-          });
-      },
-      render: function () {
+        });
+    },
+    render: function() {
         return (
-          <div>
-          <h2>Drafts for Friends</h2>
-            <div id="table-area">
-              {/* Grid renders components from Columns.js */}
-               <Grid
-                      initialSort="id"
-                      useGriddleStyles={false}
-                      settingsText={DAF_Settings.localization.settings}
-                      filterPlaceholderText={DAF_Settings.localization.filter}
-                      showSettings={true}
-                      showFilter={true}
-                      results={this.state.data}
-                      columnMetadata={columnMeta}
-                      resultsPerPage={resultsPerPage}
-                      settingsToggleClassName="button"
-                      tableClassName="wp-list-table widefat fixed striped posts"/>
+            <div>
+                <h2>Drafts for Friends</h2>
+                <div id="table-area">
+                    {/* Grid renders components from Columns.js */}
+                    <Grid
+                        initialSort="id"
+                        useGriddleStyles={false}
+                        settingsText={DAF_Settings.localization.settings}
+                        filterPlaceholderText={DAF_Settings.localization.filter}
+                        showSettings={true}
+                        showFilter={true}
+                        results={this.state.data}
+                        columnMetadata={columnMeta}
+                        resultsPerPage={resultsPerPage}
+                        settingsToggleClassName="button"
+                        tableClassName="wp-list-table widefat fixed striped posts"/>
+                </div>
             </div>
-          </div>
         )
-      }
-  });
+    }
+});
 
 /* Module.exports instead of normal dom mounting */
 module.exports = ReactApp;
