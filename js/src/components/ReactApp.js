@@ -20,16 +20,26 @@ var ReactApp = React.createClass({
       componentDidMount: function() {
         var that = this;
         /* Pseudo Flux implementation */
-        jQuery(document).on( 'updateData', function( event, row ) {
+        jQuery(document).on( 'updateData', function( event, data ) {
             /* var filterTest = that.state.data.filter(function(user) {
                 return user.id === 300;
             }); console.log(filterTest);*/
-
-            var newData = that.state.data;
-            for (var i = newData.length - 1; i >= 0; i--) {
-               if(newData[i].id === row.id) {
-                    newData[i].status = "no_transient";
-               }
+            console.log('dtata', data);
+            if( data.action === "delete" ) {
+                var newData = that.state.data;
+                for (var i = newData.length - 1; i >= 0; i--) {
+                   if(newData[i].id === data.row.id) {
+                        newData[i].status.shared = false;
+                   }
+                }
+            } else if ( data.action === "share" ) {
+                var newData = that.state.data;
+                for (var i = newData.length - 1; i >= 0; i--) {
+                   if(newData[i].id === data.row.id) {
+                        newData[i].status.shared = true;
+                        newData[i].status.time = data.date;
+                   }
+                }
             }
 
             console.log('new data', newData);
@@ -53,6 +63,7 @@ var ReactApp = React.createClass({
                       results={this.state.data}
                       columnMetadata={columnMeta}
                       resultsPerPage={resultsPerPage}
+                      settingsToggleClassName="button"
                       tableClassName="wp-list-table widefat fixed striped posts"/>
             </div>
           </div>
