@@ -1,4 +1,6 @@
-var React = require('react');
+var React = require('react'),
+Button = require('./Button.js'),
+utils = require('./utils/utils.js');
 
 var Extend = React.createClass({
 	getInitialState: function() {
@@ -18,8 +20,14 @@ var Extend = React.createClass({
   		success: function(data){
   			var self = this,
   			data = JSON.parse(data);
-  			console.log(data.status);
-  			this.setState({status: data.status});
+
+  			var params = {
+  				action: "share",
+  				date: data.date,
+  				row: this.props.rowData
+  			};
+  			/* Update global state data. Pseudo Flux */
+  			jQuery(document).trigger('updateData', params);
   		},
   		error: function(MLHttpRequest, textStatus, errorThrown){
   			alert("Ajax not enabled :(");
@@ -41,51 +49,41 @@ var Extend = React.createClass({
   		this._doAjax(data);
   },
   _extendShare: function(){
-  	      	var data = {
-  					action: 'enable_sharable_draft',
-  					nonce: WP_API_Settings.nonce,
-  					post_id: this.props.rowData.id,
-  					date: "2015-04-28 23:56:27"
-  			};
-  			//this._doAjax(data);
-  			this._doAjax(data);
+
   },
   _handleFormSubmit: function(e){
   	   e.preventDefault();
-  	   console.log(e);
-  },
-  setCaretPosition: function (ctrl, pos) {
-      if(ctrl.setSelectionRange){
-        ctrl.focus();
-        ctrl.setSelectionRange(pos,pos);
-      } else if (ctrl.createTextRange) {
-        var range = ctrl.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', pos);
-        range.moveStart('character', pos);
-        range.select();
-      }
+
+  	   var data = {
+			action: 'enable_sharable_draft',
+			nonce: WP_API_Settings.nonce,
+			post_id: this.props.rowData.id,
+			time_unit: this.refs.time_unit.getDOMNode().value,
+			time_value: this.state.expireValue
+  	   };
+  	   // Do Ajax call with values here
+  	   this._doAjax(data);
   },
   componentDidMount: function() {
     document.addEventListener('click', this._checkClickAway);
+    document.addEventListener('keyup', this._keyBinding);
     /* Grab input and focus cursor */
     var input = this.refs.expireVal.getDOMNode();
     input.focus();
-    this.setCaretPosition(input, 2);
+    utils.setCaretPosition(input, 2);
   },
   componentWillUnmount: function() {
   	/* remove event listener on unmount */
     document.removeEventListener('click', this._checkClickAway);
+    document.removeEventListener('keyup', this._keyBinding);
   },
-  isDescendant: function(parent, child) {
-    var node = child.parentNode;
-
-    while (node != null) {
-      if (node == parent) return true;
-      node = node.parentNode;
-    }
-
-    return false;
+  _keyBinding: function(e){
+  	if (e.keyCode === 13) {
+  		/* if Enter hit save shared/extend */
+  	} else if (e.keyCode === 27) {
+  		/* if ESC hit close dialog */
+  		this._handleCancel();
+  	}
   },
   _checkClickAway: function(e) {
     var el = this.getDOMNode();
@@ -93,7 +91,7 @@ var Extend = React.createClass({
     // Check if the target is inside the current component
     if (this.isMounted() &&
       e.target != el &&
-      !this.isDescendant(el, e.target)) {
+      !utils.isDescendant(el, e.target)) {
       if (this._handleCancel) this._handleCancel();
     }
   },
@@ -104,16 +102,22 @@ var Extend = React.createClass({
            <form className="draftsforfriends-extend" onSubmit={this._handleFormSubmit} action="" method="post">
 					<input type="hidden" name="action" value="extend" />
 					<input type="hidden" name="nonce" value={WP_API_Settings.nonce} />
-					<input type="submit" className="button" name="draftsforfriends_extend_submit" value={this.props.action} />
-					<span>{modifierText}</span>
-           			<input name="expires" type="text" size="3"
+					<Button type="submit" name="draftsforfriends_submit"
+							value={this.props.action}
+							className={"action-button " + this.props.action}
+							primary={true}>
+						{this.props.action}
+					</Button>
+					<span className={"action-button " + this.props.action} >{modifierText}</span>
+           			<input name="expires" type="text"
+           				   className="expire-value"
            				   ref="expireVal"
            				   onChange={this._changeExpireValue}
            				   value={this.state.expireValue} />
-           			<select name="measure">
-           				<option value="m">minutes</option>
-           				<option value="h" selected="selected">hours</option>
-           				<option value="d">days</option>
+           			<select name="measure" ref="time_unit">
+           				<option value="minutes">minutes</option>
+           				<option value="hours" selected="selected">hours</option>
+           				<option value="days">days</option>
            			</select>
            			<a className="draftsforfriends-extend-cancel" onClick={this._handleCancel} >
            				Cancel
