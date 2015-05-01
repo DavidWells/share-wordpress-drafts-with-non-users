@@ -1,7 +1,7 @@
-var React = require('react');
-var LinkComponent = require('./Link.js'),
-Actions = require('./Actions.js'),
-Status = require('./Status.js');
+var React = require('react'),
+LinkColumn = require('./Column-Link.js'),
+ActionsColumn = require('./Column-Actions.js'),
+StatusColumn = require('./Column-Status.js');
 
 var columnMeta = [
   {
@@ -9,7 +9,6 @@ var columnMeta = [
     "order": 1,
     "locked": false,
     "visible": true,
-    //"customComponent": CheckBox,
     "cssClassName": "checkbox-column"
   },
   {
@@ -17,7 +16,7 @@ var columnMeta = [
     "order": 2,
     "locked": false,
     "visible": true,
-    "customComponent": LinkComponent,
+    "customComponent": LinkColumn,
     "cssClassName": "title-column"
   },
   {
@@ -25,7 +24,7 @@ var columnMeta = [
     "order": 3,
     "locked": false,
     "visible": true,
-    "customComponent": Status,
+    "customComponent": StatusColumn,
     "cssClassName": "status-column"
   },
   {
@@ -34,7 +33,7 @@ var columnMeta = [
     "locked": false,
     "sortable": false,
     "visible": true,
-    "customComponent": Actions,
+    "customComponent": ActionsColumn,
     "cssClassName": "actions-column"
   }
 ];
