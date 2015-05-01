@@ -19,11 +19,11 @@ var Actions = React.createClass({
 	  console.log('trigger ajax delete');
 	  jQuery.ajax({
 	  	type: 'POST',
-	  	url: WP_API_Settings.ajax_url,
+	  	url: DAF_Settings.ajax_url,
 	  	context: this,
 	  	data: {
 				action: 'stop_sharing_draft',
-				nonce: WP_API_Settings.nonce,
+				nonce: DAF_Settings.nonce,
 				post_id: this.props.rowData.id
 		},
 	  	success: function(data){

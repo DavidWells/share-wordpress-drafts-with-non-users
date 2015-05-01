@@ -14,7 +14,7 @@ var Extend = React.createClass({
   _doAjax: function(data){
   	jQuery.ajax({
   		type: 'POST',
-  		url: WP_API_Settings.ajax_url,
+  		url: DAF_Settings.ajax_url,
   		context: this,
   		data: data,
   		success: function(data){
@@ -43,7 +43,7 @@ var Extend = React.createClass({
   _disableShare: function(){
 	  	var data = {
 				action: 'disable_sharable_draft',
-				nonce: WP_API_Settings.nonce,
+				nonce: DAF_Settings.nonce,
 				post_id: this.props.rowData.id
 		};
   		this._doAjax(data);
@@ -56,7 +56,7 @@ var Extend = React.createClass({
 
   	   var data = {
 			action: 'enable_sharable_draft',
-			nonce: WP_API_Settings.nonce,
+			nonce: DAF_Settings.nonce,
 			post_id: this.props.rowData.id,
 			time_unit: this.refs.time_unit.getDOMNode().value,
 			time_value: this.state.expireValue
@@ -101,7 +101,7 @@ var Extend = React.createClass({
           <div>
            <form className="draftsforfriends-extend" onSubmit={this._handleFormSubmit} action="" method="post">
 					<input type="hidden" name="action" value="extend" />
-					<input type="hidden" name="nonce" value={WP_API_Settings.nonce} />
+					<input type="hidden" name="nonce" value={DAF_Settings.nonce} />
 					<Button type="submit" name="draftsforfriends_submit"
 							value={this.props.action}
 							className={"action-button " + this.props.action}

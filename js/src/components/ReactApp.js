@@ -1,15 +1,8 @@
 var React = require('react');
-
-//var Griddle = React.createFactory(require('griddle-react'));
 var Grid = require('griddle-react');
-var fakeData = require('../data/fakeData.js').fakeData;
-//var columnMeta = require('../data/columnMeta.js');
 var columnMeta = require('./Columns.js');
 
 var resultsPerPage = 200;
-
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
 
 var ReactApp = React.createClass({
       getInitialState: function() {
@@ -56,8 +49,8 @@ var ReactApp = React.createClass({
                <Grid
                       initialSort="id"
                       useGriddleStyles={false}
-                      settingsText={WP_API_Settings.localization.settings}
-                      filterPlaceholderText={WP_API_Settings.localization.filter}
+                      settingsText={DAF_Settings.localization.settings}
+                      filterPlaceholderText={DAF_Settings.localization.filter}
                       showSettings={true}
                       showFilter={true}
                       results={this.state.data}

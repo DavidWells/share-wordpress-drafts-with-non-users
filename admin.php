@@ -21,12 +21,10 @@ class Drafts_For_Friends_Admin {
 		//add_action('admin_menu', array( __CLASS__ , 'add_sub_menus' ) );
 	}
 
-		/**
-		*  Adds sub-menus to 'Calls to Action'
-		*/
+	/**
+	*  Adds sub-menus
+	*/
 	public static function add_admin_pages() {
-
-		//add_submenu_page('edit.php', __( 'Drafts for Friends' , 'draftsforfriends' ), __( 'Drafts for Friends' , 'draftsforfriends' ) , 'manage_options', 'mountPoint', 100);
 
 		add_submenu_page("edit.php",
 						__('Drafts for Friends', 'draftsforfriends'),
@@ -34,7 +32,6 @@ class Drafts_For_Friends_Admin {
 						'manage_options',
 						'drafts_with_friends',
 						array(__CLASS__, 'mountPoint'));
-
 	}
 
 	public static function localize_javascript_text(){
@@ -62,15 +59,16 @@ class Drafts_For_Friends_Admin {
 			return;
 		}
 
-		/* load styles */
+		/* load scripts */
 		wp_enqueue_script('drafts-for-friends', DRAFTS_FOR_FRIENDS_URLPATH . 'js/build/main.js', array(), $ver, true );
 		wp_localize_script( 'drafts-for-friends',
-							'WP_API_Settings',
-							array(	'root' => esc_url_raw( get_json_url() ),
-									'nonce' => wp_create_nonce( 'daf_nonce' ),
-									'ajax_url' => admin_url( 'admin-ajax.php' ),
-									'localization' => self::localize_javascript_text(),
-									'drafts' => self::get_drafts() ) );
+							'DAF_Settings',
+							array(
+								'nonce' => wp_create_nonce( 'daf_nonce' ),
+								'ajax_url' => admin_url( 'admin-ajax.php' ),
+								'localization' => self::localize_javascript_text(),
+								'drafts' => self::get_drafts() )
+							);
 		/* load styles */
 		wp_enqueue_style('wp-cta-css-post-new', DRAFTS_FOR_FRIENDS_URLPATH . 'css/daf.css');
 
@@ -99,11 +97,11 @@ class Drafts_For_Friends_Admin {
 		$expiration = get_option( '_transient_timeout_' . $name );
 
 		if( empty( $expiration ) ) {
-			return __( 'Does not expire', 'pw-transients-manager' );
+			return __( 'Does not expire', 'draftsforfriends' );
 		}
 
 		if( $time_now > $expiration ) {
-			return __( 'Expired', 'pw-transients-manager' );
+			return __( 'Expired', 'draftsforfriends' );
 		}
 		return human_time_diff( $time_now, $expiration );
 
@@ -126,20 +124,28 @@ class Drafts_For_Friends_Admin {
 
 	   $list = array();
 
-	   foreach ( $posts as $post ) {
-	   		//print_r($post);
-	   	   $transient = get_transient( 'daf_' . $post->ID);
-	   	   $test = self::get_transient_expiration('daf_' . $post->ID);
+		foreach ( $posts as $post ) {
+			//print_r($post);
+			$transient_name = 'daf_' . $post->ID;
+			$transient = get_transient( $transient_name );
 
-	   	   /* _no_transient flag for initial table sort and state */
-	   	   $status = ($transient) ? $test : "no_transient";
-	       $list[] = array(
-	           'id'   => $post->ID,
-	           'title' => $post->post_title,
-	           'status' => $status,
-	           'actions' => "", // stub for action column
-	           'type of post' => $post->post_type // stub for action column
-	       );
+			/* _no_transient flag for initial table sort and state */
+			$is_shared = ($transient) ? true : false;
+			$value = ($transient) ? self::get_transient_expiration($transient_name) : "Not Shared";
+
+			$status = array(
+				'shared' => $is_shared,
+				'expires_in'=> $value,
+				'time'=>$transient
+			);
+
+			$list[] = array(
+			   'id'   => $post->ID,
+			   'title' => $post->post_title,
+			   'status' => $status,
+			   'actions' => "", // stub for action column
+			   'type of post' => $post->post_type // stub for action column
+			);
 	   }
 	   /* Thanks dWalsh! http://davidwalsh.name/detect-ajax */
 	   if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
