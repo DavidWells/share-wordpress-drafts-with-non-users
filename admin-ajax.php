@@ -2,6 +2,7 @@
 
 /**
  * Admin Ajax
+ * Controls the enable/disable of sharable drafts
  */
 
 // Exit if accessed directly
@@ -17,8 +18,8 @@ class Drafts_For_Friends_Ajax {
 		add_action( 'wp_ajax_stop_sharing_draft', array(__CLASS__, 'stop_sharing_draft' ));
 	}
 	/**
-	 * Generic function to return draft posts
-	 * @return array of drafts
+	 * Enable sharable draft
+	 * Updates transient values and dates
 	 */
 	public static function enable_sharable_draft() {
 		check_ajax_referer( 'daf_nonce', 'nonce' );
@@ -29,8 +30,6 @@ class Drafts_For_Friends_Ajax {
 		$transient_name = 'daf_' . $post_id;
 		$time = current_time( 'timestamp', 0 );
 		$now = date("Y-m-d G:i:s", $time);
-
-		//set_transient( 'daf_258', '2015-04-30 23:56:27', 1 * HOUR_IN_SECONDS );
 
 		switch ($time_unit) {
 		    case 'minutes':
@@ -80,12 +79,13 @@ class Drafts_For_Friends_Ajax {
 		echo json_encode( $set_state );
 		die();
 	}
-
+	/**
+	 * disable sharable draft
+	 */
 	public static function stop_sharing_draft() {
 		check_ajax_referer( 'daf_nonce', 'nonce' );
 		$post_id = intval( $_POST['post_id'] );
 		delete_transient( 'daf_' . $post_id);
-		//$set_state = array('msg' => __('Draft disbaled', 'draftsforfriends'));
 		$set_state = array('status' => false );
 		echo json_encode( $set_state );
 		die();
