@@ -24,6 +24,7 @@ var columnMeta = [
     "order": 3,
     "locked": false,
     "visible": true,
+    "sortable": false,
     "customComponent": StatusColumn,
     "cssClassName": "status-column"
   },
