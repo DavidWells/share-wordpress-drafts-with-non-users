@@ -4,12 +4,12 @@ Button = require('./Button.js');
 
 var Actions = React.createClass({
 	getInitialState: function() {
-
 		return {
 			status: this.props.rowData.status.shared,
 			showForm: false
 		};
 	},
+	/* Handles removing sharable draft */
 	_stopSharing: function(){
 		jQuery.ajax({
 			type: 'POST',
@@ -58,27 +58,31 @@ var Actions = React.createClass({
 
 		if(this.state.status) {
 			extendButton = <Button onClick={this._showForm}>Extend</Button>;
-			stopButton =  <Button id={"stop-"+this.props.rowData.id} onClick={this._stopSharing} className="stop" primary={true}>Stop Sharing</Button>;
+			stopButton = (
+				<Button id={"stop-"+this.props.rowData.id}
+						onClick={this._stopSharing}
+						className="stop"
+						primary={true}>
+				Stop Sharing
+				</Button>
+			);
 			shareButton = "";
 			action = "Extend";
 		} else {
-			extendButton = "";
-			stopButton = "";
 			shareButton = <Button onClick={this._showForm}>Share Draft</Button>;
 			action ="Share";
 		}
 
 		if(this.state.showForm) {
-			timepicker = (<TimePicker action={action}
-									  rowData={this.props.rowData}
-									  hideform={this._hideForm}
-									  updateStatus={this._updateStatus} />
-						);
+			timepicker = (
+				<TimePicker action={action}
+							rowData={this.props.rowData}
+							hideform={this._hideForm}
+							updateStatus={this._updateStatus} />
+			);
 			extendButton = "";
 			stopButton = "";
 			shareButton = "";
-		} else {
-			timepicker = "";
 		}
 
 		return (
