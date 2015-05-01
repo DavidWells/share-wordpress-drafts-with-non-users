@@ -6,7 +6,7 @@ moment = require('moment');
 var Status = React.createClass({
 
   refreshClock: function() {
-    var interval = 60000;
+    var interval = 5000;
     this.interval = setInterval(this.forceUpdate.bind(this), interval);
   },
   clearTimer: function(){
