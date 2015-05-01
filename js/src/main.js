@@ -30,34 +30,4 @@ jQuery(document).ready(function($) {
 			}
 		});
 
-			/* WP-API not working sad face =(
-  		    var dataArray = {};
-  		    var urlRequest = WP_API_Settings.root+"/posts/";
-  		    var typeRequest = 'GET';
-
-  		    //first set the standard stuff
-  		    dataArray["action"] = "wp_api";
-  		    dataArray["post_status"] = "draft";
-  		    dataArray["_wp_json_nonce"] =  WP_API_Settings.nonce;
-
-  		    //make the post
-  		    $.ajax(urlRequest,{
-  		        url : urlRequest,
-  		        type : typeRequest,
-  		        data : dataArray,
-  		        dataType: 'json',
-  		        cache : false,
-  		        beforeSend: function (xhr) {
-  		            xhr.setRequestHeader('X-WP-Nonce', WP_API_Settings.nonce);
-
-  		            if (beforeSend) {
-  		                return beforeSend.apply(this, arguments);
-  		            }
-  		        },
-  		        success: function(data) {
-  		            console.log(data);
-  		        },
-  		    });
-			*/
-
  });
