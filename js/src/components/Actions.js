@@ -1,9 +1,11 @@
 var React = require('react'),
-TimePicker = require('./TimePicker.js');
+TimePicker = require('./TimePicker.js'),
+Button = require('./Button.js');
 
 var Actions = React.createClass({
 	getInitialState: function() {
-		var currentlyShared = !this.props.rowData.status.match(/no_transient/);
+		var currentlyShared = this.props.rowData.status.shared;
+
 		return {
 			status: currentlyShared,
 			showForm: false
@@ -13,10 +15,39 @@ var Actions = React.createClass({
 		this.parent = this.getDOMNode().parentNode.parentNode;
 		//console.log(this.parent);
 	},
-	_handleDisable: function(){
+	_stopSharing: function(){
 	  console.log('trigger ajax delete');
-	  this.setState({showForm: true});
-
+	  jQuery.ajax({
+	  	type: 'POST',
+	  	url: WP_API_Settings.ajax_url,
+	  	context: this,
+	  	data: {
+				action: 'stop_sharing_draft',
+				nonce: WP_API_Settings.nonce,
+				post_id: this.props.rowData.id
+		},
+	  	success: function(data){
+	  		var self = this,
+	  		data = JSON.parse(data);
+	  		console.log(data);
+	  		console.log(data.status);
+	  		this.setState({status: data.status});
+	  		console.log(self);
+	  		var test = jQuery(this.parent);
+	  		console.log(test);
+	  		/* wrong */
+	  		var params = {
+	  			action: "delete",
+	  			row: this.props.rowData
+	  		};
+	  		jQuery(document).trigger('updateData', params);
+	  		/* need to reload the TR row data */
+	  		// I need to return the entire list of data again and reflow the table
+	  	},
+	  	error: function(MLHttpRequest, textStatus, errorThrown){
+	  		alert("Ajax not enabled :(");
+	  	}
+	  });
 	},
 	_hideForm: function(){
 		this.setState({showForm: false});
@@ -27,36 +58,49 @@ var Actions = React.createClass({
       	/* trigger popup here */
       	this.setState({showForm: true});
   },
+  _updateStatus: function(){
+		this.setState({
+			status: true,
+			showForm: false
+		});
+  },
   render: function(){
-    url = "";
+  	var timepicker,
+  	extendButton,
+  	stopButton,
+  	shareButton,
+  	action;
 
-    console.log(this.state.status);
     if(this.state.status) {
-      var extendButton = <span onClick={this._handleExtend}>Extend</span>;
-      var stopSharingButton =  <span onClick={this._handleDisable}>Stop Sharing</span>;
-      var shareButton = "";
-      var action = "Extend";
+      extendButton = <Button onClick={this._handleExtend}>Extend</Button>;
+      stopButton =  <Button id={"stop-"+this.props.rowData.id} onClick={this._stopSharing} className="stop" primary={true}>Stop Sharing</Button>;
+      shareButton = "";
+      action = "Extend";
     } else {
       extendButton = "";
-      stopSharingButton = "";
-      shareButton = <span href={url} onClick={this._handleExtend}>Share this draft</span>;
+      stopButton = "";
+      shareButton = <Button onClick={this._handleExtend}>Share Draft</Button>;
       action ="Share";
     }
 
     if(this.state.showForm) {
-    	timepicker = <TimePicker action={action} rowData={this.props.rowData} hideform={this._hideForm} />
+    	timepicker = (<TimePicker action={action}
+								  rowData={this.props.rowData}
+								  hideform={this._hideForm}
+								  updateStatus={this._updateStatus} />
+    				);
     	extendButton = "";
-    	stopSharingButton = "";
+    	stopButton = "";
     	shareButton = "";
     } else {
     	timepicker = "";
     }
 
     return (
-          <div>
+          <div className="action-holder">
             {shareButton}
             {extendButton}
-            {stopSharingButton}
+            {stopButton}
             {timepicker}
           </div>
     );
