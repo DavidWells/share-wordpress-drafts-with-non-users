@@ -111,12 +111,12 @@ if ( !class_exists('Drafts_For_Friends_Plugin')	) {
 
 			/* Admin Only */
 			if (is_admin()) {
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'admin.php');
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'admin-ajax.php');
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin.php');
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/admin-ajax.php');
 
 			} else {
 			/* Frontend Only */
-				include_once( DRAFTS_FOR_FRIENDS_PATH . 'limit-access.php');
+				include_once( DRAFTS_FOR_FRIENDS_PATH . 'inc/limit-access.php');
 			}
 
 
