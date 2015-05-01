@@ -51,12 +51,17 @@ var LinkComponent = React.createClass({
 	urlRoot = window.location.origin + "/?p=" + this.props.rowData.id,
 	url = (shared) ? urlRoot + "&drafts_for_friends=baba_8A5KTEJ" : urlRoot,
 	linkInput = (showLink) ? <input value={url} readonly /> : "",
-	classes = "grid dashicons " + dashicon;
+	classes = "grid dashicons " + dashicon,
+	icons;
 
 	if(shared) {
-		var icons = <span title="Click to grab link" className={classes} onClick={this.showLinkInput}></span>;
-	} else {
-		var icons = "";
+		icons = (
+			<span
+				title="Click to grab link"
+				className={classes}
+				onClick={this.showLinkInput}>
+			</span>
+		);
 	}
 
 	var title = (!showLink) ? <a href={url} target="_blank" title={titleAttr}>{this.props.data}</a> : "";
