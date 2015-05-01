@@ -1,17 +1,16 @@
-    /** @jsx React.DOM */
+/**
+ * Main react entry point
+ * Mounts the react app in the dom
+ */
+var React = require('react'),
+ReactApp = require('./components/ReactApp'),
+mountNode = document.getElementById("react_mount");
 
-var React = require('react');
-var ReactApp = require('./components/ReactApp');
-
-var mountNode = document.getElementById("react_mount");
-
-/* bootstrap data here */
-
+/* bootstrap react app here */
 React.render(new ReactApp({gridData: DAF_Settings.drafts }), mountNode);
 
-
+/*
 jQuery(document).ready(function($) {
-
 		$.ajax({
 			type: 'POST',
 			url: DAF_Settings.ajax_url,
@@ -22,12 +21,12 @@ jQuery(document).ready(function($) {
 			success: function(data){
 				var self = this;
 				console.log(data);
-
+				// do hydration on client
 			},
 
 			error: function(MLHttpRequest, textStatus, errorThrown){
 				alert("Ajax not enabled :(");
 			}
 		});
-
  });
+*/
