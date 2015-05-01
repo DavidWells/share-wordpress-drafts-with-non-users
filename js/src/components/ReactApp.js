@@ -33,7 +33,7 @@ var ReactApp = React.createClass({
                    }
                 }
             }
-
+            /* set state with new data and reflow grid */
             that.setState({ data: newData });
 
         });
