@@ -1,8 +1,7 @@
-var React = require('react');
-var Grid = require('griddle-react');
-var columnMeta = require('./Columns.js');
-
-var resultsPerPage = 200;
+var React = require('react'),
+Grid = require('griddle-react'),
+columnMeta = require('./Columns.js'),
+resultsPerPage = 200;
 
 var ReactApp = React.createClass({
       getInitialState: function() {
@@ -14,10 +13,7 @@ var ReactApp = React.createClass({
         var that = this;
         /* Pseudo Flux implementation */
         jQuery(document).on( 'updateData', function( event, data ) {
-            /* var filterTest = that.state.data.filter(function(user) {
-                return user.id === 300;
-            }); console.log(filterTest);*/
-            console.log('dtata', data);
+
             if( data.action === "delete" ) {
                 var newData = that.state.data;
                 for (var i = newData.length - 1; i >= 0; i--) {
@@ -35,7 +31,6 @@ var ReactApp = React.createClass({
                 }
             }
 
-            console.log('new data', newData);
             that.setState({ data: newData });
 
           });

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Admin Class
+ * Admin Display Page
  */
 
 // Exit if accessed directly
@@ -18,7 +18,6 @@ class Drafts_For_Friends_Admin {
 		add_action('admin_enqueue_scripts', array( __CLASS__ , 'enqueue_files' ) );
 		add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
 		add_action( 'wp_ajax_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
-		//add_action('admin_menu', array( __CLASS__ , 'add_sub_menus' ) );
 	}
 
 	/**
@@ -157,10 +156,6 @@ class Drafts_For_Friends_Admin {
 	   return $list;
 	}
 
-
 }
 
-/**
-*  Loads Class Pre-Init
-*/
 $Drafts_For_Friends_Admin = new Drafts_For_Friends_Admin();
