@@ -17,14 +17,16 @@ var columnMeta = [
     "order": 2,
     "locked": false,
     "visible": true,
-    "customComponent": LinkComponent
+    "customComponent": LinkComponent,
+    "cssClassName": "title-column"
   },
   {
     "columnName": "status",
     "order": 3,
     "locked": false,
     "visible": true,
-    "customComponent": Status
+    "customComponent": Status,
+    "cssClassName": "status-column"
   },
   {
     "columnName": "actions",
