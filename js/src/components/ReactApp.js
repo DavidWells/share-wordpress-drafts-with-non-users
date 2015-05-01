@@ -1,3 +1,6 @@
+/**
+ * Main React Parent Component
+ */
 var React = require('react'),
 Grid = require('griddle-react'),
 columnMeta = require('./Columns.js'),

@@ -1,3 +1,6 @@
+/**
+ * Button Component
+ */
 var React = require('react');
 var classNames = require('classnames');
 
