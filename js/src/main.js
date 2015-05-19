@@ -11,22 +11,22 @@ React.render(new ReactApp({gridData: DAF_Settings.drafts }), mountNode);
 
 /*
 jQuery(document).ready(function($) {
-		$.ajax({
-			type: 'POST',
-			url: DAF_Settings.ajax_url,
-			context: this,
-			data: {
-				action: 'drafts_for_friends_ajax',
-			},
-			success: function(data){
-				var self = this;
-				console.log(data);
-				// do hydration on client
-			},
+        $.ajax({
+            type: 'POST',
+            url: DAF_Settings.ajax_url,
+            context: this,
+            data: {
+                action: 'drafts_for_friends_ajax',
+            },
+            success: function(data){
+                var self = this;
+                console.log(data);
+                // do hydration on client
+            },
 
-			error: function(MLHttpRequest, textStatus, errorThrown){
-				alert("Ajax not enabled :(");
-			}
-		});
+            error: function(MLHttpRequest, textStatus, errorThrown){
+                alert("Ajax not enabled :(");
+            }
+        });
  });
 */
