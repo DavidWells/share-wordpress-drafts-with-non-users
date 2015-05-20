@@ -7,7 +7,7 @@ Author: David Wells
 Version: 1.0.0
 Author URI: http://davidwells.io
 Text Domain: draftsforfriends
-Domain Path: /lang/
+Domain Path: /languages/
 */
 
 // Exit if accessed directly
