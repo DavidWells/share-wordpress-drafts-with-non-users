@@ -16,7 +16,7 @@ class Drafts_For_Friends_Admin {
 
 		add_action('admin_menu', array(__CLASS__, 'add_admin_pages'));
 		add_action('admin_enqueue_scripts', array( __CLASS__ , 'enqueue_files' ) );
-		add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
+		//add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
 		add_action( 'wp_ajax_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
 	}
 
@@ -37,9 +37,9 @@ class Drafts_For_Friends_Admin {
 
 		$words = array(
 			'settings' => __('Settings', 'draftsforfriends'),
-			'filter' => __('Filter Results', 'draftsforfriends'),
+			'filter' => __('Filter Drafts', 'draftsforfriends'),
 			'stop_sharing' => __('Stop Sharing', 'draftsforfriends'),
-			'no_data'=> __('There are currently no drafts to share. Save a post as a draft in order to share it', 'draftsforfriends')
+			'no_data'=> __('There no drafts found', 'draftsforfriends')
 			/* etc */
 		);
 
@@ -148,6 +148,10 @@ class Drafts_For_Friends_Admin {
 	   }
 	   /* Thanks dWalsh! http://davidwalsh.name/detect-ajax */
 	   if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+	   		/* special ajax here */
+	   		echo json_encode( $list );
+	   		die();
+	   } else if (defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 	   		/* special ajax here */
 	   		echo json_encode( $list );
 	   		die();
