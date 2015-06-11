@@ -16,8 +16,8 @@ class Drafts_For_Friends_Admin {
 
 		add_action('admin_menu', array(__CLASS__, 'add_admin_pages'));
 		add_action('admin_enqueue_scripts', array( __CLASS__ , 'enqueue_files' ) );
-		//add_action( 'wp_ajax_nopriv_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
 		add_action( 'wp_ajax_drafts_for_friends_ajax', array(__CLASS__, 'get_drafts' ));
+
 	}
 
 	/**

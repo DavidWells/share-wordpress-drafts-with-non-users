@@ -39,8 +39,8 @@ class Drafts_For_Friends_Limit_Access {
 			wp_die($expired_message);
 		}
 
-		// if not published and expiration date checks out. Show draft
-		if ('publish' != $status && $access) {
+		// if post status is draft and expiration date checks out. Show draft
+		if ('draft' === $status && $access) {
 			self::$shared_post = $p;
 		}
 
