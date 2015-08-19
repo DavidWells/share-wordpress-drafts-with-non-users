@@ -138,9 +138,11 @@ class Drafts_For_Friends_Admin {
 				'time'=>$transient
 			);
 
+			$title = ($post->post_title !== "") ? $post->post_title : 'no title';
+
 			$list[] = array(
 			   'id'   => $post->ID,
-			   'title' => $post->post_title,
+			   'title' => $title,
 			   'status' => $status,
 			   'actions' => "", // stub for action column
 			   'type of post' => $post->post_type
